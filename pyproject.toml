@@ -1,6 +1,6 @@
 [project]
 name = "fastapi-cls-view"
-version = "0.1.0"
+version = "0.1.1"
 description = "Class-based views for FastAPI: fields as dependencies, routes as methods, hooks as in pydantic"
 readme = "README.md"
 license = "MIT"
@@ -9,7 +9,7 @@ authors = [{ name = "Yurii Karabas", email = "1998uriyyo@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.165.0",
-    "fastapi-injected>=0.5.2",
+    "fastapi-injected>=0.6.0",
 ]
 
 [project.optional-dependencies]

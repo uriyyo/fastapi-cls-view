@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import inspect
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Annotated, Any, ForwardRef, get_args
+from typing import TYPE_CHECKING, Any, ForwardRef, get_args
 
-from fastapi import Depends
 from fastapi_injected.ext import is_async_callable
 from fastapi_injected.signature import Signature
 from starlette.concurrency import run_in_threadpool
@@ -40,13 +38,8 @@ def bind_view(func: Callable[..., Any], view: type[View], /, *, include_return: 
         if (name := _unresolved(annotation)) is not None:
             raise ViewNotReadyError(view, NameError(f"name {name!r} is not defined", name=name))
 
-    return sign.update(
-        self_name,
-        # FastAPI builds the view once per request, from `View.__signature__`
-        annotation=Annotated[Any, Depends(view)],
-        kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
-        default=inspect.Parameter.empty,
-    )
+    # FastAPI builds the view once per request, from `View.__signature__`
+    return sign.provide(self_name, view)
 
 
 async def run(func: Callable[..., Any], /, *args: Any, **kwargs: Any) -> Any:
